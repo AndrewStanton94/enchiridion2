@@ -1,0 +1,28 @@
+{
+	"extends": ["eslint:recommended", "google"],
+
+	"parserOptions": {
+		"ecmaVersion": 6
+	},
+
+	"rules": {
+		"no-console": "off",
+		"one-var": [2, {
+			"var": "always",
+			"let": "always",
+			"const": "always"
+		}],
+		"new-cap": ["error", {
+			"capIsNewExceptions": ["Router"]
+		}]
+	},
+
+	"env": {
+		"es6": true,
+		"node": true
+	},
+
+	"plugins": [
+		"html"
+	]
+}
