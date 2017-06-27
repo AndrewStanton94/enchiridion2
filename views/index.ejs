@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><%= title %></title>
-	<script src="js/bundle.js"></script>
-	<link rel='stylesheet' href='/style/style.css' />
+	<% include common/head %>
 </head>
-<body>
-	<h1><%= title %></h1>
-	<p>Welcome to <%= title %></p>
+<body class="primaryColor">
+	<div class="grid">
+		<header class="secondaryColor">
+			<h1><span class="dropCap purple">ε</span><span class="smallCaps tertiaryColor">nchiridion</span></h1>
+		</header>
+
+		<nav id="siteNav" class="secondaryColor">
+			<ul>
+				<li>Login</li>
+				<li>Help</li>
+			</ul>
+		</nav>
+
+		<div id="searchNav" class="secondaryColor">
+			<div id="seach">
+				<form class="">
+					<input type="search" name="fragmentSearch" value="" placeholder="Search Fragments">
+					<input type="submit" name="searchFragments" value="Search">
+				</form>
+			</div>
+			<nav id="docNav">
+				In document navigation
+			</nav>
+		</div>
+
+		<main class="secondaryColor">
+			The main article
+		</main>
+
+		<aside id="transclusionData" class="secondaryColor">
+			The transclusion data
+		</aside>
+		<div id="sidebar" class="secondaryColor">
+			Sidebar with plugins
+		</div>
+
+		<footer class="secondaryColor">
+		</footer>
+	</div>
 </body>
 </html>

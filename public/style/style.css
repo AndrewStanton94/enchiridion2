@@ -1,8 +1,25 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.smallCaps {
+	font-variant-caps: small-caps;
+}
+
+.purple {
+	color: rebeccapurple;
+}
+
+.primaryColor {
+	background-color: #560C70;
+	/*background-color: #BD00FF;*/
+}
+
+.secondaryColor {
+	background-color: #09B26B;
+	/*background-color: #14CC7F;*/
+}
+
+.tertiaryColor {
+	color: #FFB819;
 }
