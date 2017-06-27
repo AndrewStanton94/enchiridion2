@@ -1,0 +1,47 @@
+.grid {
+	display: grid;
+	grid-template-rows: minmax(max-content, 4em) auto max-content;
+	grid-template-columns: 1fr 5fr 1fr 1fr;
+	grid-template-areas: "header header siteNav siteNav"
+						 "searchNav documentContainer transclusionData sidebar"
+						 "footer footer footer footer";
+	grid-gap: 1em;
+}
+
+.grid > * {
+	padding: 1em;
+}
+
+.dropCap {
+	font-size: 2em;
+	float: left;
+	line-height: 0.5em;
+}
+
+header {
+	grid-area: header;
+}
+
+#siteNav {
+	grid-area: siteNav;
+}
+
+#searchNav {
+	grid-area: searchNav;
+}
+
+main {
+	grid-area: documentContainer;
+}
+
+#transclusionData {
+	grid-area: transclusionData;
+}
+
+#sidebar {
+	grid-area: sidebar;
+}
+
+footer {
+	grid-area: footer;
+}
