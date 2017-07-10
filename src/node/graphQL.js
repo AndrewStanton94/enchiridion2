@@ -5,37 +5,18 @@ const express = require('express'),
 	// What things exist and what can be requested
 	schema = require('./graphQLschema'),
 	mongooseQueries = require('./mongooseQueries'),
+	{
+		FragmentResolver,
+		CreatorResolver,
+	} = require('./resolverClasses'),
 
 	// Functions to handle the requests
 	rootValue = {
 		hello: () => 'Hello world!',
-		fragment: ({_id, dataType}) =>
-			new Promise((resolve, reject) => {
-				let query = {};
-				if (_id) {
-					query._id = _id;
-				}
-				mongooseQueries.findFragment(query).then((input) => input[0])
-				.then((fragment) => {
-					console.log(fragment);
-					fragment.data = JSON.stringify(fragment.data);
-					resolve(fragment);
-				});
-			}),
 
-		creator: ({_id}) =>
-			new Promise((resolve, reject) => {
-				console.log('Resolving a creator');
-				let query = {};
-				if (_id) {
-					query._id = _id;
-				}
-				mongooseQueries.findCreator(query).then((input) => input[0])
-				.then((fragment) => {
-					console.log(fragment);
-					resolve(fragment);
-				});
-			}),
+		fragment: ({_id, dataType}) => new FragmentResolver(_id, dataType),
+
+		creator: ({_id}) => new CreatorResolver(_id),
 
 		createCreator: ({creatorData}) =>
 			new Promise((resolve, reject) => {
@@ -75,6 +56,7 @@ router.use('/', graphqlHTTP({
 	graphiql: true,
 }));
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/test', {
 	useMongoClient: true,
 });

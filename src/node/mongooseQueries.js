@@ -2,7 +2,8 @@ const {Fragment, Creator} = require('./mongooseSchema');
 
 module.exports = {
 	findFragment: (query={}) => {
-		console.log(query);
+		// console.log('findFragment query:');
+		// console.log(query);
 		return Fragment.find(query);
 	},
 
@@ -12,6 +13,7 @@ module.exports = {
 	},
 
 	findCreator: (query={}) => {
+		console.log('findCreator query:');
 		console.log(query);
 		return Creator.find(query);
 	},

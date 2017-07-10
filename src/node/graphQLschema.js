@@ -21,7 +21,7 @@ module.exports = buildSchema(`
 		name: String
 		# A list of people who have contributed to the fragment
 		creators: [Creator]
-		# Returns the data. Extracting dataType happens in the database.
+		# Returns the data. Extracting dataType happens in the database
 		data: String
 		# Stores information about the data
 		meta: [String]
