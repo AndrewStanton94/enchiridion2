@@ -4,7 +4,7 @@ module.exports = {
 	findFragment: (query={}) => {
 		// console.log('findFragment query:');
 		// console.log(query);
-		return Fragment.find(query);
+		return Fragment.find(query).then((input) => input[0]);
 	},
 
 	createFragment: (query) => {
@@ -15,7 +15,7 @@ module.exports = {
 	findCreator: (query={}) => {
 		console.log('findCreator query:');
 		console.log(query);
-		return Creator.find(query);
+		return Creator.find(query).then((input) => input[0]);
 	},
 
 	createCreator: (query) => {

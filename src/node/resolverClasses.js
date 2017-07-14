@@ -1,30 +1,59 @@
-const mongooseQueries = require('./mongooseQueries');
+const mongooseQueries = require('./mongooseQueries'),
+	getFragmentAttribute = (self, attribute) =>
+		new Promise((resolve, reject) => {
+			let query = {};
+			if (self._id) {
+				query._id = self._id;
+			}
+			mongooseQueries.findFragment(query)
+			.then((fragment) => {
+			console.log(`Resolving fragment ${self._id}/${attribute}: ${fragment[attribute]}`);
+				resolve(fragment[attribute]);
+			});
+		}),
 
-let FragmentResolver = class {
+	FragmentResolver = class {
 		/**
-		 *	This may allow graphQL to resolve nested documents
-		 *	@param {ID!} _id The id of an existing Fragment
-		 *	@param {ID!} dataType What representation of the data in required?
+		 *	This class has separate methods to resolve each attribute.
+		 * Needed to handle the [Creator] for GraphlQL
+		 * @todo Find a way of pointing the creators IDs out to CreatorResolver
+		 * @param {ID!} _id The id of an existing Fragment
+		 * @param {dataType} dataType What representation of the data in required?
 		*/
 		constructor(_id, dataType) {
 			this._id = _id;
 			this.dataType = dataType;
 		}
 
+		/**
+		 * @return {name} Resolves to Fragment name
+		 */
 		name() {
-			return new Promise((resolve, reject) => {
-				let query = {};
-				if (this._id) {
-					query._id = this._id;
-				}
-				mongooseQueries.findFragment(query).then((input) => input[0])
-				.then((fragment) => {
-				// console.log(`Resolving fragment ${this._id}/name: ${fragment.name}`);
-					resolve(fragment.name);
-				});
-			});
+			return getFragmentAttribute(this, 'name');
 		}
 
+		/**
+		 * @return {[delta]} Resolves to Fragment deltas
+		 */
+		deltas() {
+			return getFragmentAttribute(this, 'deltas');
+		}
+
+		/**
+		 * @return {data} Resolves to Fragment data
+		 */
+		async data() {
+			let data = await getFragmentAttribute(this, 'data');
+			if (this.dataType) {
+				data = data[this.dataType];
+			}
+			console.log(`Resolving fragment ${this._id}/data[${this.dataType}]: ${data}`);
+			return data;
+		}
+
+		/**
+		 * @return {[Creator]} Resolves to a list of Creators
+		 */
 		creators() {
 			console.log(`Resolving fragment ${this._id}/creators`);
 			return new Promise((resolve, reject) => {
@@ -32,17 +61,9 @@ let FragmentResolver = class {
 				if (this._id) {
 					query._id = this._id;
 				}
-				mongooseQueries.findFragment(query).then((input) => input[0])
+				mongooseQueries.findFragment(query)
 				.then((fragment) => {
 					console.log(fragment);
-					// resolve(fragment.creators);
-					// resolve([{
-					// 	'name': 'Me',
-					// 	'languages': ['Eng', 'pcm'],
-					// 	'formats': ['txt', 'ph'],
-					// 	'created': null,
-					// }]);
-					// resolve(new CreatorResolver(fragment.creators[0]));
 					resolve(fragment.creators.map((_id) => {
 						const creator = new CreatorResolver(_id);
 						return creator.getCreator();
@@ -52,38 +73,34 @@ let FragmentResolver = class {
 		}
 	},
 
+	/**
+	 * @class CreatorResolver
+	 * Gets information about a Creator
+	 */
 	CreatorResolver = class {
+		/**
+		 * @param {ID} _id Unique Creator ID
+		 */
 		constructor(_id) {
 			this._id = _id;
-			console.log(`Resolving Creator ${this._id}`);
 		}
 
+		/**
+		 * @return {Creator} Resolves creator data from database
+		 */
 		getCreator() {
 			return new Promise((resolve, reject) => {
-				console.log('Resolving a creator');
+				console.log(`Resolving Creator ${this._id}`);
 				let query = {};
 				if (this._id) {
 					query._id = this._id;
 				}
-				mongooseQueries.findCreator(query).then((input) => input[0])
+				mongooseQueries.findCreator(query)
 				.then((creator) => {
 					console.log(creator);
 					resolve(creator);
 				});
 			});
-		}
-
-		name() {
-			console.log(`Resolving Creator ${this._id}/name`);
-			return 'Edmund';
-		}
-
-		languages() {
-			return ['Eng', 'pcm'];
-		}
-
-		formats() {
-			return ['txt', 'ph'];
 		}
 	}
 ;

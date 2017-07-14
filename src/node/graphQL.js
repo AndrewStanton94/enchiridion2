@@ -14,9 +14,11 @@ const express = require('express'),
 	rootValue = {
 		hello: () => 'Hello world!',
 
-		fragment: ({_id, dataType}) => new FragmentResolver(_id, dataType),
+		fragment: ({_id, dataType}) =>
+			new FragmentResolver(_id, dataType),
 
-		creator: ({_id}) => new CreatorResolver(_id),
+		creator: ({_id}) =>
+			new CreatorResolver(_id).getCreator(),
 
 		createCreator: ({creatorData}) =>
 			new Promise((resolve, reject) => {
