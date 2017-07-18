@@ -5,8 +5,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "debug": "SET DEBUG=enchiridion2:* & npm start",
-	"lint": "node ./node_modules/eslint/bin/eslint.js ./**.js",
-	"nodemon": "node ./node_modules/nodemon/bin/nodemon.js"
+    "lint": "node ./node_modules/eslint/bin/eslint.js ./**.js",
+    "nodemon": "node ./node_modules/nodemon/bin/nodemon.js",
+    "build": "node ./node_modules/webpack/bin/webpack.js"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
@@ -14,6 +15,7 @@
     "debug": "~2.6.0",
     "ejs": "~2.5.5",
     "express": "~4.14.1",
+    "mongoose": "^4.11.1",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2"
   },
@@ -21,6 +23,7 @@
     "eslint": "^4.0.0",
     "eslint-config-google": "^0.8.0",
     "eslint-plugin-html": "^3.0.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "webpack": "^3.2.0"
   }
 }
