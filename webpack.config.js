@@ -7,4 +7,5 @@ module.exports = {
 		path: path.resolve(__dirname, './public/js'),
 	},
 	watch: true,
+	devtool: 'inline-source-map',
 };

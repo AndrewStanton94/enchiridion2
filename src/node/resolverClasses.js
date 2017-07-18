@@ -7,7 +7,7 @@ const mongooseQueries = require('./mongooseQueries'),
 			}
 			mongooseQueries.findFragment(query)
 			.then((fragment) => {
-			console.log(`Resolving fragment ${self._id}/${attribute}: ${fragment[attribute]}`);
+			console.log(`Res frag ${self._id}/${attribute}: ${fragment[attribute]}`);
 				resolve(fragment[attribute]);
 			});
 		}),
@@ -71,6 +71,27 @@ const mongooseQueries = require('./mongooseQueries'),
 				});
 			});
 		}
+
+		/**
+		 * Make new Fragment
+		 * @param {Object} fragmentData
+		 * @return {Fragment}
+		 */
+		make(fragmentData) {
+			return new Promise((resolve, reject) => {
+				mongooseQueries.createFragment({
+					'name': fragmentData.name,
+					'data': fragmentData.data,
+					'creators': [fragmentData.authorId],
+				}).then((input) => {
+					console.log('createFragment then:');
+					console.log(input);
+					resolve(input);
+				}).catch((err) => {
+					throw err;
+				});
+			});
+		}
 	},
 
 	/**
@@ -99,6 +120,27 @@ const mongooseQueries = require('./mongooseQueries'),
 				.then((creator) => {
 					console.log(creator);
 					resolve(creator);
+				});
+			});
+		}
+
+		/**
+		 * Make new Creator
+		 * @param {Object} creatorData
+		 * @return {Creator}
+		 */
+		make(creatorData) {
+			return new Promise((resolve, reject) => {
+				mongooseQueries.createCreator({
+					'name': creatorData.name,
+					'languages': creatorData.languages,
+					'formats': creatorData.formats,
+				}).then((input) => {
+					console.log('createCreator then:');
+					console.log(input);
+					resolve(input);
+				}).catch((err) => {
+					throw err;
 				});
 			});
 		}
