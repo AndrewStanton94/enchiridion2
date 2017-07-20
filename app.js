@@ -4,7 +4,8 @@ const express = require('express'),
 	logger = require('morgan'),
 	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
-	app = express();
+	app = express(),
+	mongoose = require('mongoose');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,6 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
+app.use('/fragments', require('./routes/fragments'));
+app.use('/creators', require('./routes/creators'));
 app.use('/users', require('./routes/users'));
 
 // catch 404 and forward to error handler
@@ -37,6 +40,11 @@ app.use(function(err, req, res, next) {
 	// render the error page
 	res.status(err.status || 500);
 	res.render('error');
+});
+
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/test', {
+	useMongoClient: true,
 });
 
 module.exports = app;
