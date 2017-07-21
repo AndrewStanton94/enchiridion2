@@ -11,3 +11,9 @@ creator.search(testData.creator.searchTerm);
 // fragment.make(testData.fragment.newFragmentData);
 fragment.search(testData.fragment.searchTerm);
 // fragment.update(testData.fragment._id, testData.fragment.fragmentUpdate);
+
+import setUp from './setUp';
+
+window.addEventListener('load', () => {
+	setUp.addEventListeners();
+});

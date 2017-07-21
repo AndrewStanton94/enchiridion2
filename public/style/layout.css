@@ -1,10 +1,10 @@
 .grid {
 	display: grid;
 	grid-template-rows: minmax(max-content, 4em) auto max-content;
-	grid-template-columns: 1fr 5fr 1fr 1fr;
-	grid-template-areas: "header header siteNav siteNav"
-						 "searchNav documentContainer transclusionData sidebar"
-						 "footer footer footer footer";
+	grid-template-columns: 3fr 1fr;
+	grid-template-areas: "header siteNav"
+						 "main main"
+						 "footer footer";
 	grid-gap: 1em;
 }
 
@@ -12,11 +12,6 @@
 	padding: 1em;
 }
 
-.dropCap {
-	font-size: 2em;
-	float: left;
-	line-height: 0.5em;
-}
 
 header {
 	grid-area: header;
@@ -26,22 +21,51 @@ header {
 	grid-area: siteNav;
 }
 
-#searchNav {
-	grid-area: searchNav;
-}
-
-main {
-	grid-area: documentContainer;
-}
-
-#transclusionData {
-	grid-area: transclusionData;
-}
-
-#sidebar {
-	grid-area: sidebar;
+main{
+	grid-area: main;
 }
 
 footer {
 	grid-area: footer;
+}
+
+.flexContainer{
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0;
+}
+
+.flexChild {
+	min-width: 300px;
+	margin: 0.5em;
+}
+
+#searchNav {
+	flex: 1;
+}
+
+#content {
+	flex: 5;
+}
+
+#transclusionData {
+	flex: 1;
+}
+
+#sidebar {
+	flex: 1;
+}
+
+.toggle {
+	flex-grow: 0;
+	background-color: grey;
+}
+.dropCap {
+	font-size: 2em;
+	float: left;
+	line-height: 0.5em;
+}
+
+.hidden {
+	display: none;
 }
