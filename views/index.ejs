@@ -16,28 +16,41 @@
 			</ul>
 		</nav>
 
-		<div id="searchNav" class="secondaryColor">
-			<div id="seach">
-				<form class="">
-					<input type="search" name="fragmentSearch" value="" placeholder="Search Fragments">
-					<input type="submit" name="searchFragments" value="Search">
-				</form>
+		<main class="flexContainer">
+			<div id="searchNav" class="secondaryColor flexChild">
+				<h1>Search &amp; naviagation</h1>
+				<div id="seach">
+					<form class="">
+						<input type="search" name="fragmentSearch" value="" placeholder="Search Fragments">
+						<input type="submit" name="searchFragments" value="Search">
+					</form>
+				</div>
+				<nav id="docNav">
+					In document navigation
+				</nav>
 			</div>
-			<nav id="docNav">
-				In document navigation
-			</nav>
-		</div>
 
-		<main class="secondaryColor">
-			The main article
+			<div class="toggle" data-elemId="searchNav" data-hidden=">>" data-visible="<<">
+				<<
+			</div>
+
+			<div id="content" class="secondaryColor flexChild">
+				The main article
+			</div>
+
+			<aside id="transclusionData" class="secondaryColor flexChild">
+				The transclusion data
+			</aside>
+
+			<div class="toggle" data-elemId="sidebar" data-hidden="<<" data-visible=">>">
+				>>
+			</div>
+
+			<div id="sidebar" class="secondaryColor flexChild">
+				<h1>Plugins</h1>
+				Sidebar with plugins
+			</div>
 		</main>
-
-		<aside id="transclusionData" class="secondaryColor">
-			The transclusion data
-		</aside>
-		<div id="sidebar" class="secondaryColor">
-			Sidebar with plugins
-		</div>
 
 		<footer class="secondaryColor">
 		</footer>
