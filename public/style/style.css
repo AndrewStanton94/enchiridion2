@@ -23,3 +23,17 @@ body {
 .tertiaryColor {
 	color: #FFB819;
 }
+
+.fragment {
+	border: 5px solid black;
+	background-color: teal;
+	color: #f0f8ff;
+}
+
+.fragment[changed] {
+	background-color: blue;
+}
+
+.fragment[changed]:focus-within {
+	background-color: red;
+}

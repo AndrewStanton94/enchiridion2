@@ -69,3 +69,9 @@ footer {
 .hidden {
 	display: none;
 }
+
+.fragment {
+	display: block;
+	margin: 1em;
+	padding: 1em;
+}
