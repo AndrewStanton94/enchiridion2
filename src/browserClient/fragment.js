@@ -20,17 +20,20 @@ module.exports = {
 	},
 
 	get: (_id) => {
-		fetch(`${url}/${_id}`, {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log(data);
-		})
-		.catch((e) => {
-			console.log(e);
+		return new Promise(function(resolve, reject) {
+			fetch(`${url}/${_id}`, {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				resolve(data);
+			})
+			.catch((e) => {
+				console.log(e);
+				reject(e);
+			});
 		});
 	},
 
@@ -67,4 +70,24 @@ module.exports = {
 			console.log(e);
 		});
 	},
+
+	updateDataType: ({fragmentid, datatype}, update) =>
+		new Promise(function(resolve, reject) {
+			fetch(`${url}/${fragmentid}/${datatype._id}`, {
+				method: 'put',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(update),
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				resolve(data);
+			})
+			.catch((e) => {
+				console.log(e);
+				reject(e);
+			});
+		})
+	,
 };

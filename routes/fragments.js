@@ -43,6 +43,31 @@ router.put('/:id', (req, res, next) => {
 	});
 });
 
+router.put('/:id/:dataTypeId', (req, res, next) => {
+	const _id = req.params.id,
+		dataTypeId = req.params.dataTypeId,
+		update = req.body,
+		selector = {
+			_id,
+			'data._id': dataTypeId,
+		},
+		options = {
+			new: true,
+			runValidators: true,
+		}
+	;
+	Fragment.findOneAndUpdate(
+		selector,
+		update,
+		options
+	).then((fragment) => {
+		res.json(fragment);
+	}).catch((err) => {
+		console.error(err);
+		res.status(404).send('It broke on fragment update');
+	});
+});
+
 router.search('/', (req, res, next) => {
 	const searchTerm = req.body;
 	Fragment.find(searchTerm).then((fragments) => {
