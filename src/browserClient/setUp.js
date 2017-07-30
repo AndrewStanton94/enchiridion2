@@ -1,7 +1,7 @@
 import uiUtils from './uiUtils';
 import dataUtils from './dataUtils';
-import fragmentPlaceholder from './fragmentPlaceholder';
-import fragment from './fragment.js';
+import fragmentPlaceholder from './coreCustomElements/fragmentPlaceholder';
+import fragment from './db/fragment.js';
 
 export default {
 	addEventListeners: () => {

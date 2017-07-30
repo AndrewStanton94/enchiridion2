@@ -1,6 +1,6 @@
-import dataUtils from './dataUtils';
-import fragment from './fragment';
-import pluginLoader from './pluginLoader';
+import dataUtils from '../dataUtils';
+import fragment from '../db/fragment';
+import pluginLoader from '../pluginLoader';
 
 /** Custom element to represent a fragment that has not loaded
  */
