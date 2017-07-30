@@ -8,7 +8,7 @@ const mongoose = require('mongoose'),
 			language: [String],
 			format: String,
 			data: {
-				type: [String],
+				type: [Schema.Types.Mixed],
 				index: true,
 			},
 			meta: Schema.Types.Mixed,

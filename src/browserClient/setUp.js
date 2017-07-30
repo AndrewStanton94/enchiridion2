@@ -25,18 +25,6 @@ export default {
 			placeholder.setAttribute('fragment', e.detail.fragment);
 			content.appendChild(placeholder);
 		});
-
-		content.addEventListener('keyup', (e) => {
-			// console.log(e);
-			e.target.changed = 'local';
-		});
-
-		content.addEventListener('focusout', (e) => {
-			const changedElements = document.querySelectorAll('[changed]');
-			[...changedElements].forEach((elem) => {
-				elem.upload();
-			});
-		});
 	},
 
 	definePlaceholder: () => {

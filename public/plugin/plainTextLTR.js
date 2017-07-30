@@ -24,6 +24,12 @@
 		connectedCallback() {
 			console.log('On screen yo');
 			this.classList.add('fragment');
+
+			this.addEventListener('input', (e) => {
+				this.changed = 'local';
+				this.upload();
+				e.stopPropagation();
+			});
 		}
 
 		/**
@@ -105,22 +111,41 @@
 			}
 		}
 
+		/**
+		 * Updates the displayed fragment name
+		 */
 		renderName() {
 			this.shadowRoot.querySelector('h1').textContent = this.fragmentname;
 		}
 
+		/**
+		 * Generates the data from the current dataType
+		 * Works with text content and nested fragments
+		 */
 		renderContent() {
-			const name = this.shadowRoot.querySelector('h1'),
-			data = this.shadowRoot.querySelector('div');
+			const data = this.shadowRoot.querySelector('div');
 
 			this.lang = this.datatype.language[0];
-
-			name.textContent = this.fragmentname;
 			data.innerHTML = '';
+
 			this.datatype.data.forEach((dataLine) => {
-				const elem = document.createElement('div');
-				elem.textContent = dataLine;
-				elem.contentEditable = true;
+				let elem;
+				switch (typeof dataLine) {
+					case 'string':
+						elem = document.createElement('div');
+						elem.textContent = dataLine;
+						elem.contentEditable = true;
+						break;
+
+					case 'object':
+						elem = document.createElement('fragment-placeholder');
+						elem.setAttribute('fragment', dataLine.fragment);
+						break;
+
+					default:
+						console.warn(typeof dataLine);
+						break;
+				}
 				data.appendChild(elem);
 			});
 		}
@@ -170,8 +195,11 @@
 				}
 			}
 
-			let newData = currentData.map((elem) => {
+			let newData = currentData.map((elem, i) => {
 				console.log(elem);
+				if (elem.classList.contains('fragment')) {
+					return savedData[i];
+				}
 				return elem.textContent;
 			}),
 			update = {'$set': {'data.$.data': newData}};

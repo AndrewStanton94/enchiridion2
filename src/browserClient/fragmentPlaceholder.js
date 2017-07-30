@@ -54,14 +54,13 @@ class fragmentPlaceholder extends HTMLElement {
 		}) => {
 			this.updatePlaceholder('pluginString', element);
 
-			const content = document.getElementById('content'),
-				elem = document.createElement(element);
+			const elem = document.createElement(element);
 
 			elem.datatype = dataType;
 			elem.fragmentid = fragment._id;
 			elem.fragmentname = fragment.name;
 
-			content.replaceChild(elem, this);
+			this.parentElement.replaceChild(elem, this);
 		});
 	}
 

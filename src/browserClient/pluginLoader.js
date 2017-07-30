@@ -15,17 +15,28 @@ export default {
 		)
 		.then((serverResponse) => {
 			const url = `plugin/${serverResponse.plugin}.js`,
-				scriptTag = document.createElement('script');
-			scriptTag.src = url;
+				existingScripts = document.querySelectorAll(`script[src="${url}"]`);
 
-			scriptTag.addEventListener('load', () => {
+			// Only load plugin if not already loaded
+			if (existingScripts.length === 0) {
+				const scriptTag = document.createElement('script');
+				scriptTag.src = url;
+
+				scriptTag.addEventListener('load', () => {
+					resolve({
+						'element': serverResponse.element,
+						'fragment': fragment,
+						'dataType': dataType,
+					});
+				});
+				document.getElementsByTagName('head')[0].appendChild(scriptTag);
+			} else {
 				resolve({
 					'element': serverResponse.element,
 					'fragment': fragment,
 					'dataType': dataType,
 				});
-			});
-			document.getElementsByTagName('head')[0].appendChild(scriptTag);
+			}
 		});
 	}),
 };
