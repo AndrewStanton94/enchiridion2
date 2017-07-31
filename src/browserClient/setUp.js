@@ -1,6 +1,8 @@
 import uiUtils from './uiUtils';
 import dataUtils from './dataUtils';
 import fragmentPlaceholder from './coreCustomElements/fragmentPlaceholder';
+import referenceElement from './coreCustomElements/referenceElement';
+import creatorElement from './coreCustomElements/creatorElement';
 import fragment from './db/fragment.js';
 
 export default {
@@ -27,8 +29,10 @@ export default {
 		});
 	},
 
-	definePlaceholder: () => {
+	defineCoreCustomElements: () => {
 		fragmentPlaceholder();
+		referenceElement();
+		creatorElement();
 	},
 
 	/**

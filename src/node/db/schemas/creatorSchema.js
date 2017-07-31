@@ -9,6 +9,8 @@ const mongoose = require('mongoose'),
 			lastName: String,
 			languages: [String],
 			formats: [String],
+			bio: String,
+			profilePicture: String,
 		},
 		{
 			timestamps: {

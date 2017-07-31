@@ -12,6 +12,7 @@ const mongoose = require('mongoose'),
 				index: true,
 			},
 			meta: Schema.Types.Mixed,
+			creators: [String],
 		},
 		{
 			emitIndexErrors: true,

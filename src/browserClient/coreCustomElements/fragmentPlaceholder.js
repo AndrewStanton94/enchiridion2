@@ -54,13 +54,17 @@ class fragmentPlaceholder extends HTMLElement {
 		}) => {
 			this.updatePlaceholder('pluginString', element);
 
-			const elem = document.createElement(element);
+			const elem = document.createElement(element),
+				referenceElem = document.createElement('reference-element');
 
 			elem.datatype = dataType;
 			elem.fragmentid = fragment._id;
 			elem.fragmentname = fragment.name;
-
 			this.parentElement.replaceChild(elem, this);
+
+			referenceElem.fragment = fragment._id;
+			referenceElem.datatype = dataType;
+			document.getElementById('transclusionData').appendChild(referenceElem);
 		});
 	}
 
@@ -95,7 +99,7 @@ class fragmentPlaceholder extends HTMLElement {
 	 * @param {String} newValue
 	 */
 	attributeChangedCallback(name, oldValue, newValue) {
-		console.log(name, oldValue, newValue);
+		// console.log(name, oldValue, newValue);
 	}
 
 	/**

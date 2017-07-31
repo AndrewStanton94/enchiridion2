@@ -2,7 +2,7 @@ import setUp from './setUp';
 
 window.addEventListener('load', () => {
 	setUp.loadConfig();
-	setUp.definePlaceholder();
+	setUp.defineCoreCustomElements();
 	setUp.addEventListeners();
 	setUp.loadFragmentFromURL();
 });
