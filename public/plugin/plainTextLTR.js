@@ -22,7 +22,6 @@
 		/** Function called when the element is added to screen
 		 */
 		connectedCallback() {
-			console.log('On screen yo');
 			this.classList.add('fragment');
 
 			this.addEventListener('input', (e) => {
