@@ -137,7 +137,7 @@
 				switch (typeof dataLine) {
 					case 'string':
 						elem = document.createElement('div');
-						elem.textContent = dataLine;
+						elem.textContent = dataLine !== '' ? dataLine : 'placeholder';
 						elem.contentEditable = true;
 						break;
 
