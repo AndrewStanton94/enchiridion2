@@ -3,6 +3,7 @@ import dataUtils from './dataUtils';
 import fragmentPlaceholder from './coreCustomElements/fragmentPlaceholder';
 import referenceElement from './coreCustomElements/referenceElement';
 import creatorElement from './coreCustomElements/creatorElement';
+import fragmentGenerator from './coreCustomElements/fragmentGenerator';
 import fragment from './db/fragment.js';
 
 export default {
@@ -33,6 +34,7 @@ export default {
 		fragmentPlaceholder();
 		referenceElement();
 		creatorElement();
+		fragmentGenerator();
 	},
 
 	/**
@@ -47,7 +49,8 @@ export default {
 			event = new CustomEvent('generatePlaceholder', data);
 			document.getElementById('content').dispatchEvent(event);
 		} else {
-			alert('No fragment given');
+			const fragmentGenerator = document.createElement('fragment-generator');
+			document.getElementById('content').appendChild(fragmentGenerator);
 		}
 	},
 
@@ -57,6 +60,7 @@ export default {
 		document.enchiridion.config = {
 			languages: ['eng', 'pcm', 'gle'],
 			formats: ['text/plain'],
+			userId: '595e79ffbfcbda4b700867ff',
 		};
 
 		document.enchiridion.libs = {

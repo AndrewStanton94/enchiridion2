@@ -13,4 +13,13 @@ export default {
 			toggleElem.textContent = hidden;
 		}
 	},
+
+	generateOptions: (list, select) => {
+		list.forEach((listItem) => {
+			const option = document.createElement('option');
+			option.textContent = listItem;
+			option.value = listItem;
+			select.appendChild(option);
+		});
+	},
 };
