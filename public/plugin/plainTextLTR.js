@@ -11,6 +11,7 @@
 				data = document.createElement('div');
 
 			title.textContent = 'This is the title';
+			title.contentEditable = true;
 
 			data.innerHTML = '<p>Some text</p><p>Some more text</p>';
 			data.contentEditable = true;
@@ -25,8 +26,12 @@
 			this.classList.add('fragment');
 
 			this.addEventListener('input', (e) => {
-				this.changed = 'local';
-				this.upload();
+				if (e.path[0].nodeName === 'H1') {
+					this.uploadName();
+				} else {
+					this.changed = 'local';
+					this.uploadData();
+				}
 				e.stopPropagation();
 			});
 		}
@@ -161,6 +166,7 @@
 					break;
 
 				case 'fragmentname':
+					console.log('name change');
 					this.renderName();
 					break;
 			}
@@ -171,7 +177,7 @@
 		 * Currently re-uploads the full dataType.data[]
 		 * This can be refined later
 		 */
-		upload() {
+		uploadData() {
 			const currentData = [...this.shadowRoot.querySelector('div').children],
 				savedData = this.datatype.data,
 				dLength = currentData.length - savedData.length;
@@ -207,6 +213,16 @@
 			.then((fragment) => {
 				this.changed = '';
 			});
+		}
+
+		/**
+		 * Send the updated title to the server
+		 */
+		uploadName() {
+			const update = {
+				name: this.shadowRoot.querySelector('h1').textContent,
+			};
+			document.enchiridion.libs.fragment.update(this.fragmentid, update);
 		}
 	}
 
