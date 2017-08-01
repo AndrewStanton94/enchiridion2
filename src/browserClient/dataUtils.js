@@ -3,7 +3,7 @@ const
 	 * @param {String} urlString param string
 	 * @return {Object} Key value pairs of arguments from URL
 	 */
-	getParamsFromURL= (urlString = window.location.search) => {
+	getParamsFromURL = (urlString = window.location.search) => {
 		const urlParams = {};
 		// Remove preceeding ? character
 		urlString = urlString.slice(1);
