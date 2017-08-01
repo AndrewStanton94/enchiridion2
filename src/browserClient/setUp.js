@@ -65,6 +65,7 @@ export default {
 
 		document.enchiridion.libs = {
 			fragment,
+			dataUtils,
 		};
 	},
 };

@@ -61,11 +61,30 @@ const
 				}
 		}
 		return dataFormat[0];
-	}
+	},
+
+	extractContent = (elem) => {
+		const fragment = elem.fragmentid;
+		console.log(fragment);
+		let returnValue;
+		if (fragment) {
+			returnValue = {
+				type: 'transclusion',
+				fragment: elem.fragmentid,
+			};
+		} else {
+			returnValue = elem.textContent;
+		}
+		console.log(returnValue);
+		return returnValue;
+	},
+
+	elementsToList = (list) => list.map(extractContent)
 ;
 
 export default {
 	getParamsFromURL,
 	dataTypeMatchesConfig,
 	selectDataType,
+	elementsToList,
 };

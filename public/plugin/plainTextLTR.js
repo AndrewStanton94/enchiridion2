@@ -179,36 +179,10 @@
 		 */
 		uploadData() {
 			const currentData = [...this.shadowRoot.querySelector('div').children],
-				savedData = this.datatype.data,
-				dLength = currentData.length - savedData.length;
+				data = document.enchiridion.libs.dataUtils.elementsToList(currentData);
+				savedData = this.datatype.data;
 
-			if (dLength === 0) {
-				let changes = {};
-				console.log('Change within elements');
-				for (let i = 0; i < currentData.length; i++) {
-					const elem = currentData[i].textContent,
-						same = savedData[i] === elem;
-					if (!same) {
-						changes[i] = elem;
-					}
-				}
-			} else {
-				if (dLength > 0) {
-					console.log('Added elements');
-				} else if (dLength < 0) {
-					console.log('elements deleted');
-				}
-			}
-
-			let newData = currentData.map((elem, i) => {
-				console.log(elem);
-				if (elem.classList.contains('fragment')) {
-					return savedData[i];
-				}
-				return elem.textContent;
-			}),
-			update = {'$set': {'data.$.data': newData}};
-
+			let update = {'$set': {'data.$.data': data}};
 			document.enchiridion.libs.fragment.updateDataType(this, update)
 			.then((fragment) => {
 				this.changed = '';
