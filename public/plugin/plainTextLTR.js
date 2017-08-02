@@ -9,15 +9,19 @@
 			const shadow = this.attachShadow({mode: 'open'}),
 				title = document.createElement('h1'),
 				select = document.createElement('select'),
+				button = document.createElement('button'),
 				data = document.createElement('div');
 
 			title.textContent = 'This is the title';
 			title.contentEditable = true;
 
+			button.textContent = 'NEW DATATYPE';
+
 			data.innerHTML = '<p>Some text</p><p>Some more text</p>';
 
 			shadow.appendChild(title);
 			shadow.appendChild(select);
+			shadow.appendChild(button);
 			shadow.appendChild(data);
 		}
 
@@ -62,6 +66,14 @@
 					elem.datatypes = this.datatypes;
 					this.parentElement.replaceChild(elem, this);
 				});
+			});
+
+			this.shadowRoot.querySelector('button').addEventListener('click', (e) => {
+				const fragmentGenerator = document.createElement('fragment-generator');
+
+				fragmentGenerator.fragment = this.fragmentid;
+				fragmentGenerator.datatypes = this.datatypes;
+				this.parentElement.replaceChild(fragmentGenerator, this);
 			});
 		}
 
@@ -251,7 +263,6 @@
 					break;
 
 				case 'fragmentname':
-					console.log('name change');
 					this.renderName();
 					break;
 

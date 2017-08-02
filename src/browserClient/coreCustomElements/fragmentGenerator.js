@@ -49,36 +49,108 @@ class fragmentGenerator extends HTMLElement {
 
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
-			console.log(languageSelect.value, formatSelect.value);
-			const pluginData = {
+
+			if (this.fragment) {
+				console.log('dataType');
+				this.createDataType(languageSelect, formatSelect);
+			} else {
+				console.log('fragment');
+				this.createFragment(languageSelect, formatSelect);
+			}
+		});
+	}
+
+	/**
+	 * @param {String} languageSelect
+	 * @param {String} formatSelect
+	 * Generate a new fragment using the language and format from the UI
+	 */
+	createFragment(languageSelect, formatSelect) {
+		console.log(languageSelect.value, formatSelect.value);
+		const pluginData = {
+			'dataType': {
+				'format': formatSelect.value,
+				'language': languageSelect.value,
+			},
+		},
+		fragmentData = {
+			creators: [document.enchiridion.config.userId],
+			meta: {
+				'sentiment': 'baffled',
+			},
+			data: [{
+				language: languageSelect.value,
+				format: formatSelect.value,
+				data: ['placeholder'],
+				creators: [document.enchiridion.config.userId],
+			}],
+		};
+
+		Promise.all([
+			pluginLoader.run(pluginData),
+			fragment.make(fragmentData),
+		])
+		.then(([{element}, {_id, data}]) => {
+			const elem = document.createElement(element);
+
+			elem.fragmentid = _id;
+			elem.datatype = data[0];
+			this.parentElement.replaceChild(elem, this);
+		});
+	}
+
+	/**
+	 * @param {String} languageSelect
+	 * @param {String} formatSelect
+	 * Generate a new dataType using the language and format from the UI
+	 * Checks the existing datatypes to provent duplications.
+	 * TODO: Give user feedback on duplicate choice.
+	 */
+	createDataType(languageSelect, formatSelect) {
+		const selectedLanguage = languageSelect.value,
+			selectedFormat = formatSelect.value,
+			pluginData = {
 				'dataType': {
-					'format': formatSelect.value,
-					'language': languageSelect.value,
+					'format': selectedFormat,
+					'language': selectedLanguage,
 				},
 			},
 			fragmentData = {
+				language: selectedLanguage,
+				format: selectedFormat,
+				data: ['placeholder'],
 				creators: [document.enchiridion.config.userId],
-				meta: {
-					'sentiment': 'baffled',
-				},
-				data: [{
-					language: languageSelect.value,
-					format: formatSelect.value,
-					data: ['placeholder'],
-				}],
-			};
+			},
+			update = {
+				$push: {data: fragmentData},
+			},
 
-			Promise.all([
-				pluginLoader.run(pluginData),
-				fragment.make(fragmentData),
-			])
-			.then(([{element}, {_id, data}]) => {
-				const elem = document.createElement(element);
-
-				elem.fragmentid = _id;
-				elem.datatype = data[0];
-				this.parentElement.replaceChild(elem, this);
+			sameLanguage = this.datatypes.filter(({language}) => {
+				let sameLang = language[0] === selectedLanguage;
+				return sameLang;
+			}),
+			sameFormat = sameLanguage.filter(({format}) => {
+				let sameFmt = format === selectedFormat;
+				return sameFmt;
 			});
+
+		if (sameFormat.length > 0) {
+			console.warn('This dataType already exists');
+			return;
+		}
+
+		Promise.all([
+			pluginLoader.run(pluginData),
+			fragment.update(this.fragment, update),
+		])
+		.then(([{element}, {_id, data}]) => {
+			console.log(data);
+			const elem = document.createElement(element);
+
+			elem.fragmentid = _id;
+			elem.datatype = data[data.length - 1];
+			elem.datatypes = data.map(({format, language}) => ({format, language}));
+			this.parentElement.replaceChild(elem, this);
 		});
 	}
 
@@ -86,7 +158,7 @@ class fragmentGenerator extends HTMLElement {
 	 * @return {String[]} Custom attributes
 	 */
 	static get observedAttributes() {
-		return ['fragment'];
+		return ['fragment', 'datatypes'];
 	}
 
 	/**
@@ -101,9 +173,27 @@ class fragmentGenerator extends HTMLElement {
 	 */
 	set fragment(val) {
 		if (val) {
-			this.setAttribute('fragment', '');
+			this.setAttribute('fragment', val);
 		} else {
 			this.removeAttribute('fragment');
+		}
+	}
+
+	/**
+	 * @return {dataTypes}
+	 */
+	get datatypes() {
+		return JSON.parse(this.getAttribute('dataTypes'));
+	}
+
+	/**
+	 * @param {dataType} dataTypes The suitable language, format combinations
+	 */
+	set datatypes(dataTypes) {
+		if (dataTypes) {
+			this.setAttribute('dataTypes', JSON.stringify(dataTypes));
+		} else {
+			this.removeAttribute('dataTypes');
 		}
 	}
 
@@ -113,7 +203,7 @@ class fragmentGenerator extends HTMLElement {
 	 * @param {String} newValue
 	 */
 	attributeChangedCallback(name, oldValue, newValue) {
-		// console.log(name, oldValue, newValue);
+		console.log(name, oldValue, newValue);
 	}
 }
 
