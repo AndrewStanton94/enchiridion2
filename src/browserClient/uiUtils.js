@@ -14,11 +14,16 @@ export default {
 		}
 	},
 
-	generateOptions: (list, select) => {
-		list.forEach((listItem) => {
+	/**
+	 * @param {String} list The content to display
+	 * @param {element} select The element being populated
+	 * @param {String} value Use this list to set value attribute if it exsits
+	 */
+	generateOptions: (list, select, value) => {
+		list.forEach((listItem, i) => {
 			const option = document.createElement('option');
 			option.textContent = listItem;
-			option.value = listItem;
+			option.value = value ? JSON.stringify(value[i]) : listItem;
 			select.appendChild(option);
 		});
 	},
