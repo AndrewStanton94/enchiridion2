@@ -5,6 +5,7 @@ import referenceElement from './coreCustomElements/referenceElement';
 import creatorElement from './coreCustomElements/creatorElement';
 import fragmentGenerator from './coreCustomElements/fragmentGenerator';
 import fragment from './db/fragment.js';
+import pluginLoader from './pluginLoader';
 
 export default {
 	addEventListeners: () => {
@@ -66,6 +67,8 @@ export default {
 		document.enchiridion.libs = {
 			fragment,
 			dataUtils,
+			uiUtils,
+			pluginLoader,
 		};
 	},
 };

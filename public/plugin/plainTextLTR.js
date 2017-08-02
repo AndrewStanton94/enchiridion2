@@ -8,15 +8,16 @@
 			super();
 			const shadow = this.attachShadow({mode: 'open'}),
 				title = document.createElement('h1'),
+				select = document.createElement('select'),
 				data = document.createElement('div');
 
 			title.textContent = 'This is the title';
 			title.contentEditable = true;
 
 			data.innerHTML = '<p>Some text</p><p>Some more text</p>';
-			data.contentEditable = true;
 
 			shadow.appendChild(title);
+			shadow.appendChild(select);
 			shadow.appendChild(data);
 		}
 
@@ -34,13 +35,48 @@
 				}
 				e.stopPropagation();
 			});
+
+			this.shadowRoot.querySelector('select').addEventListener('change',
+			(e) => {
+				console.log(e);
+				const pluginData = JSON.parse(e.path[0].value);
+				Promise.all([
+					document.enchiridion.libs.pluginLoader.run({dataType: pluginData}),
+					document.enchiridion.libs.fragment.get(this.fragmentid),
+				])
+				.then(([{element}, {_id, data}]) => {
+					const elem = document.createElement(element);
+
+					elem.fragmentid = _id;
+					// Filtering protects against out of date index from UI
+					elem.datatype = data.filter(({language, format}, i) => {
+						let matchingFormat = format === pluginData.format,
+							matchingLanguage = language[0] === pluginData.language[0],
+							matches = matchingFormat && matchingLanguage;
+						if (matches) {
+							elem.index = i;
+						}
+						return matches;
+					})[0];
+					elem.fragmentname = this.fragmentname;
+					elem.datatypes = this.datatypes;
+					this.parentElement.replaceChild(elem, this);
+				});
+			});
 		}
 
 		/**
 		 * @return {String[]} Custom attributes
 		 */
 		static get observedAttributes() {
-			return ['changed', 'fragmentid', 'fragmentname', 'datatype'];
+			return [
+				'changed',
+				'fragmentid',
+				'fragmentname',
+				'datatype',
+				'datatypes',
+				'index',
+			];
 		}
 
 		/**
@@ -116,6 +152,42 @@
 		}
 
 		/**
+		 * @return {dataTypes}
+		 */
+		get datatypes() {
+			return JSON.parse(this.getAttribute('dataTypes'));
+		}
+
+		/**
+		 * @param {dataType} dataTypes The suitable language, format combinations
+		 */
+		set datatypes(dataTypes) {
+			if (dataTypes) {
+				this.setAttribute('dataTypes', JSON.stringify(dataTypes));
+			} else {
+				this.removeAttribute('dataTypes');
+			}
+		}
+
+		/**
+		 * @return {int} Element has changed attribute
+		 */
+		get index() {
+			return this.getAttribute('index');
+		}
+
+		/**
+		 * @param {String} val Set or un-set the index attribute
+		 */
+		set index(val) {
+			if (val) {
+				this.setAttribute('index', val);
+			} else {
+				this.removeAttribute('index');
+			}
+		}
+
+		/**
 		 * Updates the displayed fragment name
 		 */
 		renderName() {
@@ -155,6 +227,19 @@
 		}
 
 		/**
+		 * Generates the list of suitable dataTypes
+		 */
+		renderDataTypes() {
+			const select = this.shadowRoot.querySelector('select');
+			document.enchiridion.libs.uiUtils.generateOptions(
+				this.datatypes.map(({format, language}) => `${format} (${language})`),
+				select,
+				this.datatypes
+			);
+			select.selectedIndex = this.index;
+		}
+
+		/**
 		 * @param {String} name of the attribute changed
 		 * @param {String} oldValue
 		 * @param {String} newValue
@@ -169,6 +254,10 @@
 					console.log('name change');
 					this.renderName();
 					break;
+
+				case 'datatypes':
+					this.renderDataTypes();
+					break;
 			}
 		}
 
@@ -180,7 +269,6 @@
 		uploadData() {
 			const currentData = [...this.shadowRoot.querySelector('div').children],
 				data = document.enchiridion.libs.dataUtils.elementsToList(currentData);
-				savedData = this.datatype.data;
 
 			let update = {'$set': {'data.$.data': data}};
 			document.enchiridion.libs.fragment.updateDataType(this, update)

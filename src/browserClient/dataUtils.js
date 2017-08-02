@@ -56,16 +56,15 @@ const
 						console.log('Single matching format');
 						break;
 					default:
-						console.log('Many lang many formats');
+						console.log('Multiple suitable dataTypes');
 						break;
 				}
 		}
-		return dataFormat[0];
+		return dataFormat;
 	},
 
 	extractContent = (elem) => {
 		const fragment = elem.fragmentid;
-		console.log(fragment);
 		let returnValue;
 		if (fragment) {
 			returnValue = {

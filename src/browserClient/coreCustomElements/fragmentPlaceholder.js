@@ -37,19 +37,24 @@ class fragmentPlaceholder extends HTMLElement {
 		})
 		.then((fragment) =>
 			new Promise((resolve, reject) => {
-				const dataType = dataUtils.selectDataType(fragment);
+				let dataTypes = dataUtils.selectDataType(fragment),
+				dataType = dataTypes[0];
+				dataTypes = dataTypes.map(({format, language}) => ({format, language}));
+				console.log(dataTypes);
 
 				this.updatePlaceholder('dataTypeString', dataType);
 
 				resolve({
 					fragment,
 					dataType,
+					dataTypes,
 				});
 			})
 		).then(pluginLoader.run)
 		.then(({
 			element,
 			dataType,
+			dataTypes,
 			fragment,
 		}) => {
 			this.updatePlaceholder('pluginString', element);
@@ -58,6 +63,7 @@ class fragmentPlaceholder extends HTMLElement {
 				referenceElem = document.createElement('reference-element');
 
 			elem.datatype = dataType;
+			elem.datatypes = dataTypes;
 			elem.fragmentid = fragment._id;
 			elem.fragmentname = fragment.name;
 			this.parentElement.replaceChild(elem, this);

@@ -3,6 +3,7 @@ export default {
 		const {
 			fragment,
 			dataType,
+			dataTypes,
 		} = fragmentInfo,
 		{
 			format,
@@ -27,6 +28,7 @@ export default {
 						'element': serverResponse.element,
 						'fragment': fragment,
 						'dataType': dataType,
+						'dataTypes': dataTypes,
 					});
 				});
 				document.getElementsByTagName('head')[0].appendChild(scriptTag);
@@ -35,6 +37,7 @@ export default {
 					'element': serverResponse.element,
 					'fragment': fragment,
 					'dataType': dataType,
+					'dataTypes': dataTypes,
 				});
 			}
 		});
