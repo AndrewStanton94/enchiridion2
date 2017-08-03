@@ -1,8 +1,9 @@
 import creator from '../db/creator';
+import common from './common';
 
 /** Custom element to represent the collection of fragment creators
  */
-class creatorElement extends HTMLElement {
+class creatorElement extends common {
 	/** Defines the custom element */
 	constructor() {
 		// Always call super first in constructor
@@ -33,24 +34,6 @@ class creatorElement extends HTMLElement {
 	 */
 	static get observedAttributes() {
 		return ['fragment', 'datatype', 'creator', 'creatorid', 'role'];
-	}
-
-	/**
-	 * @return {fragmentID}
-	 */
-	get fragment() {
-		return this.getAttribute('fragment');
-	}
-
-	/**
-	 * @param {fragmentID} fragment
-	 */
-	set fragment(fragment) {
-		if (fragment) {
-			this.setAttribute('fragment', fragment);
-		} else {
-			this.removeAttribute('fragment');
-		}
 	}
 
 	/**

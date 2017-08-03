@@ -1,98 +1,66 @@
-const url = 'http://localhost:3000/fragments';
+import common from './common';
 
-module.exports = {
+const url = 'http://localhost:3000/fragments',
+	{headers, resolveJSON} = common;
+
+export default {
 	make: (fragmentData) =>
 		new Promise(function(resolve, reject) {
 			console.log(fragmentData);
 			fetch(url, {
 				method: 'post',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 				body: JSON.stringify(fragmentData),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		}),
 
 	get: (_id) =>
 		new Promise(function(resolve, reject) {
 			fetch(`${url}/${_id}`, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		}),
 
 	search: (query) =>
 		new Promise(function(resolve, reject) {
 			fetch(url, {
 				method: 'SEARCH',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 				body: JSON.stringify(query),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		}),
 
 	update: (_id, fragmentData) =>
 		new Promise(function(resolve, reject) {
 			fetch(`${url}/${_id}`, {
 				method: 'put',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 				body: JSON.stringify(fragmentData),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		}),
 
 	updateDataType: ({fragmentid, datatype}, update) =>
 		new Promise(function(resolve, reject) {
 			fetch(`${url}/${fragmentid}/${datatype._id}`, {
 				method: 'put',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 				body: JSON.stringify(update),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		})
 	,
 };

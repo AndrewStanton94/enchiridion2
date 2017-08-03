@@ -1,10 +1,11 @@
 import uiUtils from '../uiUtils';
 import fragment from '../db/fragment';
 import pluginLoader from '../pluginLoader';
+import common from './common';
 
 /** Custom element to represent a fragment that has not loaded
  */
-class fragmentGenerator extends HTMLElement {
+class fragmentGenerator extends common {
 	/** Defines the custom element */
 	constructor() {
 		// Always call super first in constructor
@@ -152,49 +153,6 @@ class fragmentGenerator extends HTMLElement {
 			elem.datatypes = data.map(({format, language}) => ({format, language}));
 			this.parentElement.replaceChild(elem, this);
 		});
-	}
-
-	/**
-	 * @return {String[]} Custom attributes
-	 */
-	static get observedAttributes() {
-		return ['fragment', 'datatypes'];
-	}
-
-	/**
-	 * @return {fragmentID}
-	 */
-	get fragment() {
-		return this.getAttribute('fragment');
-	}
-
-	/**
-	 * @param {fragmentID} val
-	 */
-	set fragment(val) {
-		if (val) {
-			this.setAttribute('fragment', val);
-		} else {
-			this.removeAttribute('fragment');
-		}
-	}
-
-	/**
-	 * @return {dataTypes}
-	 */
-	get datatypes() {
-		return JSON.parse(this.getAttribute('dataTypes'));
-	}
-
-	/**
-	 * @param {dataType} dataTypes The suitable language, format combinations
-	 */
-	set datatypes(dataTypes) {
-		if (dataTypes) {
-			this.setAttribute('dataTypes', JSON.stringify(dataTypes));
-		} else {
-			this.removeAttribute('dataTypes');
-		}
 	}
 
 	/**

@@ -1,6 +1,8 @@
+import common from './common';
+
 /** Custom element to represent the collection of fragment creators
  */
-class referenceElement extends HTMLElement {
+class referenceElement extends common {
 	/** Defines the custom element */
 	constructor() {
 		// Always call super first in constructor
@@ -19,24 +21,6 @@ class referenceElement extends HTMLElement {
 	 */
 	static get observedAttributes() {
 		return ['fragment', 'datatype'];
-	}
-
-	/**
-	 * @return {fragmentID}
-	 */
-	get fragment() {
-		return this.getAttribute('fragment');
-	}
-
-	/**
-	 * @param {fragmentID} fragment
-	 */
-	set fragment(fragment) {
-		if (fragment) {
-			this.setAttribute('fragment', fragment);
-		} else {
-			this.removeAttribute('fragment');
-		}
 	}
 
 	/**

@@ -1,40 +1,29 @@
-const url = 'http://localhost:3000/creators';
+import common from './common';
 
-module.exports = {
+const url = 'http://localhost:3000/creators',
+	{headers, resolveJSON} = common;
+
+export default {
 	make: (creatorData) =>
 		new Promise(function(resolve, reject) {
 			fetch(url, {
 				method: 'post',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 				body: JSON.stringify(creatorData),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		}),
 
 	get: (_id) => {
 		return new Promise(function(resolve, reject) {
 			fetch(`${url}/${_id}`, {
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		});
 	},
 
@@ -42,37 +31,23 @@ module.exports = {
 		new Promise(function(resolve, reject) {
 			fetch(url, {
 				method: 'SEARCH',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 				body: JSON.stringify(query),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		}),
 
 	update: (_id, creatorData) =>
 		new Promise(function(resolve, reject) {
 			fetch(`${url}/${_id}`, {
 				method: 'put',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers,
 				body: JSON.stringify(creatorData),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				resolve(data);
-			})
-			.catch((e) => {
-				console.log(e);
-				reject(e);
-			});
+			.then((response) =>
+				resolveJSON(response, resolve, reject)
+			);
 		}),
 };

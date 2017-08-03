@@ -1,10 +1,11 @@
 import dataUtils from '../dataUtils';
 import fragment from '../db/fragment';
 import pluginLoader from '../pluginLoader';
+import common from './common';
 
 /** Custom element to represent a fragment that has not loaded
  */
-class fragmentPlaceholder extends HTMLElement {
+class fragmentPlaceholder extends common {
 	/** Defines the custom element */
 	constructor() {
 		// Always call super first in constructor
@@ -81,32 +82,6 @@ class fragmentPlaceholder extends HTMLElement {
 		return ['fragment'];
 	}
 
-	/**
-	 * @return {fragmentID}
-	 */
-	get fragment() {
-		return this.getAttribute('fragment');
-	}
-
-	/**
-	 * @param {fragmentID} val
-	 */
-	set fragment(val) {
-		if (val) {
-			this.setAttribute('fragment', '');
-		} else {
-			this.removeAttribute('fragment');
-		}
-	}
-
-	/**
-	 * @param {String} name of the attribute changed
-	 * @param {String} oldValue
-	 * @param {String} newValue
-	 */
-	attributeChangedCallback(name, oldValue, newValue) {
-		// console.log(name, oldValue, newValue);
-	}
 
 	/**
 	 * @param {String} className Class of the element to upade
