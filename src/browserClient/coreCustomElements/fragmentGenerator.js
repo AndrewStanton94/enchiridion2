@@ -151,6 +151,7 @@ class fragmentGenerator extends common {
 			elem.fragmentid = _id;
 			elem.datatype = data[data.length - 1];
 			elem.datatypes = data.map(({format, language}) => ({format, language}));
+			elem.fragmentname = this.fragmentname;
 			this.parentElement.replaceChild(elem, this);
 		});
 	}
@@ -162,6 +163,35 @@ class fragmentGenerator extends common {
 	 */
 	attributeChangedCallback(name, oldValue, newValue) {
 		console.log(name, oldValue, newValue);
+	}
+
+	/**
+	 * @return {String[]} Custom attributes
+	 */
+	static get observedAttributes() {
+		return [
+			'fragmentname',
+			'fragment',
+			'datatypes',
+		];
+	}
+
+	/**
+	 * @return {String} fragment title
+	 */
+	get fragmentname() {
+		return this.getAttribute('fragmentname');
+	}
+
+	/**
+	 * @param {String} fragmentname
+	 */
+	set fragmentname(fragmentname) {
+		if (fragmentname) {
+			this.setAttribute('fragmentname', fragmentname);
+		} else {
+			this.removeAttribute('fragmentname');
+		}
 	}
 }
 

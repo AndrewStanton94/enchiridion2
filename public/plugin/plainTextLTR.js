@@ -73,6 +73,7 @@
 
 				fragmentGenerator.fragment = this.fragmentid;
 				fragmentGenerator.datatypes = this.datatypes;
+				fragmentGenerator.fragmentname = this.fragmentname;
 				this.parentElement.replaceChild(fragmentGenerator, this);
 			});
 		}
