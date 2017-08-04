@@ -7,10 +7,13 @@
     "debug": "SET DEBUG=enchiridion2:* & npm start",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./**.js",
     "nodemon": "node ./node_modules/nodemon/bin/nodemon.js",
-    "build": "node ./node_modules/webpack/bin/webpack.js"
+    "build": "node ./node_modules/webpack/bin/webpack.js",
+    "test": "tap test/*.js --coverage",
+    "posttest": "tap --coverage-report=lcov"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
+    "codacy-coverage": "^2.0.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.0",
     "ejs": "~2.5.5",
@@ -24,6 +27,7 @@
     "eslint-config-google": "^0.8.0",
     "eslint-plugin-html": "^3.0.0",
     "nodemon": "^1.11.0",
+    "tap": "^10.7.1",
     "webpack": "^3.2.0"
   }
 }
