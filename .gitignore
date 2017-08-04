@@ -31,3 +31,6 @@ npm-debug.log
 
 # Javascript from webpack
 public/js
+
+# dotenv config file
+.env

@@ -44,7 +44,7 @@ app.use(function(err, req, res, next) {
 });
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/test', {
+mongoose.connect(process.env.DB_URL, {
 	useMongoClient: true,
 });
 
