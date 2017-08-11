@@ -8,8 +8,7 @@
     "lint": "eslint ./**.js",
     "nodemon": "nodemon --exec 'node -r dotenv/config ./bin/www'",
     "build": "webpack",
-    "test": "tap test/*.js --coverage",
-    "uploadCoverage": "tap --coverage-report=lcov && cat ./coverage/lcov.info | ./node_modules/codacy-coverage/bin/codacy-coverage.js"
+    "makeTests": "webpack --config ./webpack.test.js"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
@@ -24,11 +23,13 @@
     "serve-favicon": "~2.3.2"
   },
   "devDependencies": {
+    "chai": "^4.1.1",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^4.0.0",
     "eslint-config-google": "^0.8.0",
     "eslint-plugin-html": "^3.0.0",
+    "mocha": "^3.5.0",
     "nodemon": "^1.11.0",
-    "tap": "^10.7.1",
     "webpack": "^3.2.0"
   }
 }
