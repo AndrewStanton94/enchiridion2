@@ -1,9 +1,19 @@
-const path = require('path');
+const path = require('path'),
+	webpack = require('webpack'),
+	CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-	entry: './src/browserClient/index.js',
+	entry: {
+		bundle: './src/browserClient/index.js',
+	},
+	plugins: [
+		new CleanWebpackPlugin(['public/js']),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'runtime',
+		}),
+	],
 	output: {
-		filename: 'bundle.js',
+		filename: '[name].js',
 		path: path.resolve(__dirname, './public/js'),
 	},
 	watch: true,
