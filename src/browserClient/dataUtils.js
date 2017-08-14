@@ -10,7 +10,10 @@ const
 		let args = urlString.split('&');
 		args.forEach((arg) => {
 			let components = arg.split('=');
-			urlParams[components[0]] = components[1];
+			// Conditional to avoid {'': undefined}
+			if (components[0] !== '') {
+				urlParams[components[0]] = components[1];
+			}
 		});
 		return urlParams;
 	},
@@ -33,7 +36,7 @@ const
 				config.languages
 			)
 		);
-		let dataFormat;
+		let dataFormat = [];
 
 		switch (dataLang.length) {
 			case 0:
@@ -49,7 +52,7 @@ const
 				);
 				switch (dataFormat.length) {
 					case 0:
-						console.warn('No formats match, default first matching language');
+						console.warn('No formats match, returning all matching languages');
 						dataFormat = dataLang;
 						break;
 					case 1:
@@ -85,5 +88,6 @@ export default {
 	getParamsFromURL,
 	dataTypeMatchesConfig,
 	selectDataType,
+	extractContent,
 	elementsToList,
 };
