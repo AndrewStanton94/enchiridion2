@@ -2,7 +2,6 @@
 <head>
   <meta charset="utf-8">
   <title>Mocha Tests</title>
-  <script src="../js/bundle.js"></script>
   <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
   <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
 </head>
@@ -13,6 +12,7 @@
   <script>mocha.setup('bdd')</script>
   <script src="runtime.js"></script>
   <script src="vendor.js"></script>
+  <script src="../js/bundle.js"></script>
   <script src="tests.js"></script>
   <script>
     mocha.checkLeaks();
