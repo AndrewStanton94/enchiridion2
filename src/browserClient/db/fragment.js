@@ -1,6 +1,6 @@
 import common from './common';
 
-const url = 'http://localhost:3000/fragments',
+const url = 'fragments',
 	{headers, resolveJSON} = common;
 
 export default {

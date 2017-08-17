@@ -1,6 +1,6 @@
 import common from './common';
 
-const url = 'http://localhost:3000/creators',
+const url = 'creators',
 	{headers, resolveJSON} = common;
 
 export default {
