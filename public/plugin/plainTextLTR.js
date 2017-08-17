@@ -8,26 +8,23 @@
 			super();
 			const shadow = this.attachShadow({mode: 'open'}),
 				title = document.createElement('h1'),
-				select = document.createElement('select'),
-				button = document.createElement('button'),
 				data = document.createElement('div');
 
 			title.textContent = 'This is the title';
 			title.contentEditable = true;
 
-			button.textContent = 'NEW DATATYPE';
-
 			data.innerHTML = '<p>Some text</p><p>Some more text</p>';
 
 			shadow.appendChild(title);
-			shadow.appendChild(select);
-			shadow.appendChild(button);
 			shadow.appendChild(data);
 		}
 
 		/** Function called when the element is added to screen
 		 */
 		connectedCallback() {
+			const selector = document.enchiridion.francis.generateDataTypeSelector(this),
+				title = this.shadowRoot.querySelector('h1');
+			this.shadowRoot.insertBefore(selector, title.nextSibling);
 			this.classList.add('fragment');
 
 			this.addEventListener('input', (e) => {
@@ -39,43 +36,7 @@
 				}
 				e.stopPropagation();
 			});
-
-			this.shadowRoot.querySelector('select').addEventListener('change',
-			(e) => {
-				console.log(e);
-				const pluginData = JSON.parse(e.path[0].value);
-				Promise.all([
-					document.enchiridion.libs.pluginLoader.run({dataType: pluginData}),
-					document.enchiridion.libs.fragment.get(this.fragmentid),
-				])
-				.then(([{element}, {_id, data}]) => {
-					const elem = document.createElement(element);
-
-					elem.fragmentid = _id;
-					// Filtering protects against out of date index from UI
-					elem.datatype = data.filter(({language, format}, i) => {
-						let matchingFormat = format === pluginData.format,
-							matchingLanguage = language[0] === pluginData.language[0],
-							matches = matchingFormat && matchingLanguage;
-						if (matches) {
-							elem.index = i;
-						}
-						return matches;
-					})[0];
-					elem.fragmentname = this.fragmentname;
-					elem.datatypes = this.datatypes;
-					this.parentElement.replaceChild(elem, this);
-				});
-			});
-
-			this.shadowRoot.querySelector('button').addEventListener('click', (e) => {
-				const fragmentGenerator = document.createElement('fragment-generator');
-
-				fragmentGenerator.fragment = this.fragmentid;
-				fragmentGenerator.datatypes = this.datatypes;
-				fragmentGenerator.fragmentname = this.fragmentname;
-				this.parentElement.replaceChild(fragmentGenerator, this);
-			});
+			this.renderDataTypes();
 		}
 
 		/**
@@ -240,19 +201,6 @@
 		}
 
 		/**
-		 * Generates the list of suitable dataTypes
-		 */
-		renderDataTypes() {
-			const select = this.shadowRoot.querySelector('select');
-			document.enchiridion.libs.uiUtils.generateOptions(
-				this.datatypes.map(({format, language}) => `${format} (${language})`),
-				select,
-				this.datatypes
-			);
-			select.selectedIndex = this.index;
-		}
-
-		/**
 		 * @param {String} name of the attribute changed
 		 * @param {String} oldValue
 		 * @param {String} newValue
@@ -271,6 +219,22 @@
 					this.renderDataTypes();
 					break;
 			}
+		}
+
+		/**
+		 * Generates the list of suitable dataTypes
+		 */
+		renderDataTypes() {
+			const select = this.shadowRoot.querySelector('select');
+			if (select === null) {
+				return;
+			}
+			document.enchiridion.libs.uiUtils.generateOptions(
+				this.datatypes.map(({format, language}) => `${format} (${language})`),
+				select,
+				this.datatypes
+			);
+			select.selectedIndex = this.index;
 		}
 
 		/**

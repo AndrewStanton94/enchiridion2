@@ -5,7 +5,9 @@ import referenceElement from './coreCustomElements/referenceElement';
 import creatorElement from './coreCustomElements/creatorElement';
 import fragmentGenerator from './coreCustomElements/fragmentGenerator';
 import fragment from './db/fragment.js';
+import creator from './db/creator.js';
 import pluginLoader from './pluginLoader';
+import francis from './francis';
 
 export default {
 	addEventListeners: () => {
@@ -32,6 +34,12 @@ export default {
 	},
 
 	defineCoreCustomElements: () => {
+		document.enchiridion.francis = francis({
+			fragmentLib: fragment,
+			creatorLib: creator,
+			pluginLoader,
+			dataUtils,
+		});
 		fragmentPlaceholder();
 		referenceElement();
 		creatorElement();

@@ -81,7 +81,10 @@ const
 		return returnValue;
 	},
 
-	elementsToList = (list) => list.map(extractContent)
+	elementsToList = (list) => list.map(extractContent),
+
+	extractFormatAndLanguage = (dataTypes) =>
+		dataTypes.map(({format, language}) => ({format, language}))
 ;
 
 export default {
@@ -90,4 +93,5 @@ export default {
 	selectDataType,
 	extractContent,
 	elementsToList,
+	extractFormatAndLanguage,
 };

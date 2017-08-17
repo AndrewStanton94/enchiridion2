@@ -1,6 +1,4 @@
 import uiUtils from '../uiUtils';
-import fragment from '../db/fragment';
-import pluginLoader from '../pluginLoader';
 import common from './common';
 
 /** Custom element to represent a fragment that has not loaded
@@ -34,6 +32,9 @@ class fragmentGenerator extends common {
 	}
 
 	/** Function called when the element is added to screen
+	 *  Generate form with the users languages and formats
+	 *  If there is a fragment value it will add the new format
+	 *  Else it will create a new fragment.
 	 */
 	connectedCallback() {
 		this.classList.add('fragment');
@@ -73,30 +74,11 @@ class fragmentGenerator extends common {
 				'format': formatSelect.value,
 				'language': languageSelect.value,
 			},
-		},
-		fragmentData = {
-			creators: [document.enchiridion.config.userId],
-			meta: {
-				'sentiment': 'baffled',
-			},
-			data: [{
-				language: languageSelect.value,
-				format: formatSelect.value,
-				data: ['placeholder'],
-				creators: [document.enchiridion.config.userId],
-			}],
 		};
 
-		Promise.all([
-			pluginLoader.run(pluginData),
-			fragment.make(fragmentData),
-		])
-		.then(([{element}, {_id, data}]) => {
-			const elem = document.createElement(element);
-
-			elem.fragmentid = _id;
-			elem.datatype = data[0];
-			this.parentElement.replaceChild(elem, this);
+		document.enchiridion.francis.makeFragment({
+			existingElement: this,
+			pluginData,
 		});
 	}
 
@@ -116,15 +98,6 @@ class fragmentGenerator extends common {
 					'language': selectedLanguage,
 				},
 			},
-			fragmentData = {
-				language: selectedLanguage,
-				format: selectedFormat,
-				data: ['placeholder'],
-				creators: [document.enchiridion.config.userId],
-			},
-			update = {
-				$push: {data: fragmentData},
-			},
 
 			sameLanguage = this.datatypes.filter(({language}) => {
 				let sameLang = language[0] === selectedLanguage;
@@ -135,24 +108,15 @@ class fragmentGenerator extends common {
 				return sameFmt;
 			});
 
+
 		if (sameFormat.length > 0) {
 			console.warn('This dataType already exists');
 			return;
 		}
 
-		Promise.all([
-			pluginLoader.run(pluginData),
-			fragment.update(this.fragment, update),
-		])
-		.then(([{element}, {_id, data}]) => {
-			console.log(data);
-			const elem = document.createElement(element);
-
-			elem.fragmentid = _id;
-			elem.datatype = data[data.length - 1];
-			elem.datatypes = data.map(({format, language}) => ({format, language}));
-			elem.fragmentname = this.fragmentname;
-			this.parentElement.replaceChild(elem, this);
+		document.enchiridion.francis.addNewDataType({
+			existingElement: this,
+			pluginData,
 		});
 	}
 
