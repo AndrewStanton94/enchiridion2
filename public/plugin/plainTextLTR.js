@@ -22,8 +22,13 @@
 		/** Function called when the element is added to screen
 		 */
 		connectedCallback() {
-			const selector = document.enchiridion.francis.generateDataTypeSelector(this),
+			const {
+					generateDataTypeSelector,
+					renderDataTypes,
+				} = document.enchiridion.francis,
+				selector = generateDataTypeSelector(this),
 				title = this.shadowRoot.querySelector('h1');
+
 			this.shadowRoot.insertBefore(selector, title.nextSibling);
 			this.classList.add('fragment');
 
@@ -36,7 +41,7 @@
 				}
 				e.stopPropagation();
 			});
-			this.renderDataTypes();
+			renderDataTypes(this);
 		}
 
 		/**
@@ -216,25 +221,9 @@
 					break;
 
 				case 'datatypes':
-					this.renderDataTypes();
+					document.enchiridion.francis.renderDataTypes(this);
 					break;
 			}
-		}
-
-		/**
-		 * Generates the list of suitable dataTypes
-		 */
-		renderDataTypes() {
-			const select = this.shadowRoot.querySelector('select');
-			if (select === null) {
-				return;
-			}
-			document.enchiridion.libs.uiUtils.generateOptions(
-				this.datatypes.map(({format, language}) => `${format} (${language})`),
-				select,
-				this.datatypes
-			);
-			select.selectedIndex = this.index;
 		}
 
 		/**

@@ -1,4 +1,6 @@
-export default ({fragmentLib, creatorLib, pluginLoader, dataUtils}) => ({
+export default ({
+	fragmentLib, creatorLib, pluginLoader, dataUtils, uiUtils,
+}) => ({
 	// libs: {fragmentLib, creatorLib, pluginLoader, dataUtils},
 
 	getFragment: (existingElement) => {
@@ -101,6 +103,11 @@ export default ({fragmentLib, creatorLib, pluginLoader, dataUtils}) => ({
 			}
 		}),
 
+	/*
+	 * Generate a form that allows the user to select the dataType to view
+	 * The form is return so it can be inserted by the plugin
+	 * There is also a button to create a new dataType
+	 */
 	generateDataTypeSelector: (existingElement) => {
 		const form = document.createElement('form'),
 			select = document.createElement('select'),
@@ -159,7 +166,25 @@ export default ({fragmentLib, creatorLib, pluginLoader, dataUtils}) => ({
 		form.appendChild(select);
 		form.appendChild(button);
 
-		// existingElement.renderDataTypes();
 		return form;
+	},
+
+	/**
+	 * Generates the list of suitable dataTypes
+	 * @param {existing} existingElement The custom element to be updated
+	 */
+	renderDataTypes: (existingElement) => {
+		const select = existingElement.shadowRoot.querySelector('select');
+		if (select === null) {
+			return;
+		}
+
+		let dataTypes = existingElement.datatypes;
+		uiUtils.generateOptions(
+			dataTypes.map(({format, language}) => `${format} (${language})`),
+			select,
+			existingElement.datatypes
+		);
+		select.selectedIndex = existingElement.index;
 	},
 });

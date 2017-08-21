@@ -39,6 +39,7 @@ export default {
 			creatorLib: creator,
 			pluginLoader,
 			dataUtils,
+			uiUtils,
 		});
 		fragmentPlaceholder();
 		referenceElement();
