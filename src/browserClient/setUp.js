@@ -8,6 +8,7 @@ import fragment from './db/fragment.js';
 import creator from './db/creator.js';
 import pluginLoader from './pluginLoader';
 import francis from './francis';
+import dominatrix from './dominatrix';
 
 export default {
 	addEventListeners: () => {
@@ -78,6 +79,7 @@ export default {
 			dataUtils,
 			uiUtils,
 			pluginLoader,
+			dominatrix,
 		};
 	},
 };

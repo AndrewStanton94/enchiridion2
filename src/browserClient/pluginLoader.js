@@ -1,3 +1,5 @@
+import dominatrix from './dominatrix';
+
 export default {
 	run: (fragmentInfo) => new Promise(function(resolve, reject) {
 		const {
@@ -16,29 +18,19 @@ export default {
 		)
 		.then((serverResponse) => {
 			const url = `plugin/${serverResponse.plugin}.js`,
-				existingScripts = document.querySelectorAll(`script[src="${url}"]`);
-
-			// Only load plugin if not already loaded
-			if (existingScripts.length === 0) {
-				const scriptTag = document.createElement('script');
-				scriptTag.src = url;
-
-				scriptTag.addEventListener('load', () => {
+				resolveFunction = () => {
 					resolve({
 						'element': serverResponse.element,
 						'fragment': fragment,
 						'dataType': dataType,
 						'dataTypes': dataTypes,
 					});
-				});
-				document.getElementsByTagName('head')[0].appendChild(scriptTag);
+				};
+
+			if (dominatrix.scriptInDOM(url)) {
+				resolveFunction();
 			} else {
-				resolve({
-					'element': serverResponse.element,
-					'fragment': fragment,
-					'dataType': dataType,
-					'dataTypes': dataTypes,
-				});
+				dominatrix.addScript(url, resolveFunction);
 			}
 		});
 	}),

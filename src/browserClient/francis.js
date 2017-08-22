@@ -1,3 +1,5 @@
+import dominatrix from './dominatrix';
+
 export default ({
 	fragmentLib, creatorLib, pluginLoader, dataUtils, uiUtils,
 }) => ({
@@ -97,7 +99,7 @@ export default ({
 			elem.datatypes = dataTypes;
 			elem.fragmentid = fragment._id;
 			elem.fragmentname = fragment.name;
-			existingElement.parentElement.replaceChild(elem, existingElement);
+			dominatrix.replaceElementWith(existingElement, elem);
 			if (postRender) {
 				return {postRender, elem};
 			}
@@ -154,13 +156,12 @@ export default ({
 		});
 
 		button.addEventListener('click', (e) => {
-			const fragmentGenerator = document.createElement('fragment-generator'),
-				parentElement = existingElement.parentElement;
+			const fragmentGenerator = document.createElement('fragment-generator');
 
 			fragmentGenerator.fragment = existingElement.fragmentid;
 			fragmentGenerator.datatypes = existingElement.datatypes;
 			fragmentGenerator.fragmentname = existingElement.fragmentname;
-			parentElement.replaceChild(fragmentGenerator, existingElement);
+			dominatrix.replaceElementWith(existingElement, fragmentGenerator);
 		});
 
 		form.appendChild(select);
