@@ -30,4 +30,17 @@ export default {
     replaceElementWith: (existingElement, newElement) => {
         existingElement.parentElement.replaceChild(newElement, existingElement);
     },
+
+    styleShadow: (existingElement, styleString) => {
+        const styleElem = document.createElement('style');
+
+        styleElem.innerHTML = styleString;
+        existingElement.shadowRoot.appendChild(styleElem);
+    },
+
+    insertAfter: (newElement, referenceElem) => {
+        const parent = referenceElem.parentNode,
+            nextElem = referenceElem.nextSibling;
+        parent.insertBefore(newElement, nextElem);
+    },
 };

@@ -1,37 +1,18 @@
 (() => {
+	const pluginCommon = document.enchiridion.libs.pluginCommon;
 	/** Custom element for plaintext content in LTR languages
 	 */
-	class plainTextLTR extends HTMLElement {
+	class plainTextLTR extends pluginCommon {
 		/** Defines the custom element */
 		constructor() {
 			// Always call super first in constructor
 			super();
-			const shadow = this.attachShadow({mode: 'open'}),
-				title = document.createElement('h1'),
-				data = document.createElement('div');
-
-			title.textContent = 'This is the title';
-			title.contentEditable = true;
-
-			data.innerHTML = '<p>Some text</p><p>Some more text</p>';
-
-			shadow.appendChild(title);
-			shadow.appendChild(data);
 		}
 
 		/** Function called when the element is added to screen
 		 */
 		connectedCallback() {
-			const {
-					generateDataTypeSelector,
-					renderDataTypes,
-				} = document.enchiridion.francis,
-				selector = generateDataTypeSelector(this),
-				title = this.shadowRoot.querySelector('h1');
-
-			this.shadowRoot.insertBefore(selector, title.nextSibling);
-			this.classList.add('fragment');
-
+			super.connectedCallback();
 			this.addEventListener('input', (e) => {
 				if (e.path[0].nodeName === 'H1') {
 					this.uploadName();
@@ -41,7 +22,6 @@
 				}
 				e.stopPropagation();
 			});
-			renderDataTypes(this);
 		}
 
 		/**
@@ -56,121 +36,6 @@
 				'datatypes',
 				'index',
 			];
-		}
-
-		/**
-		 * @return {Boolean} Element has changed attribute
-		 */
-		get changed() {
-			return this.getAttribute('changed');
-		}
-
-		/**
-		 * @param {String} val Set or un-set the changed attribute
-		 */
-		set changed(val) {
-			if (val) {
-				this.setAttribute('changed', val);
-			} else {
-				this.removeAttribute('changed');
-			}
-		}
-
-		/**
-		 * @return {fragmentID}
-		 */
-		get fragmentid() {
-			return this.getAttribute('fragmentid');
-		}
-
-		/**
-		 * @param {fragmentID} fragmentID
-		 */
-		set fragmentid(fragmentID) {
-			if (fragmentID) {
-				this.setAttribute('fragmentid', fragmentID);
-			} else {
-				this.removeAttribute('fragmentid');
-			}
-		}
-
-		/**
-		 * @return {String} fragment title
-		 */
-		get fragmentname() {
-			return this.getAttribute('fragmentname');
-		}
-
-		/**
-		 * @param {String} fragmentname
-		 */
-		set fragmentname(fragmentname) {
-			if (fragmentname) {
-				this.setAttribute('fragmentname', fragmentname);
-			} else {
-				this.removeAttribute('fragmentname');
-			}
-		}
-
-		/**
-		 * @return {dataType}
-		 */
-		get datatype() {
-			return JSON.parse(this.getAttribute('dataType'));
-		}
-
-		/**
-		 * @param {dataType} dataType The data to be displayed
-		 */
-		set datatype(dataType) {
-			if (dataType) {
-				this.setAttribute('dataType', JSON.stringify(dataType));
-			} else {
-				this.removeAttribute('dataType');
-			}
-		}
-
-		/**
-		 * @return {dataTypes}
-		 */
-		get datatypes() {
-			return JSON.parse(this.getAttribute('dataTypes'));
-		}
-
-		/**
-		 * @param {dataType} dataTypes The suitable language, format combinations
-		 */
-		set datatypes(dataTypes) {
-			if (dataTypes) {
-				this.setAttribute('dataTypes', JSON.stringify(dataTypes));
-			} else {
-				this.removeAttribute('dataTypes');
-			}
-		}
-
-		/**
-		 * @return {int} Element has changed attribute
-		 */
-		get index() {
-			return this.getAttribute('index');
-		}
-
-		/**
-		 * @param {String} val Set or un-set the index attribute
-		 */
-		set index(val) {
-			if (val) {
-				this.setAttribute('index', val);
-			} else {
-				this.removeAttribute('index');
-			}
-		}
-
-		/**
-		 * Updates the displayed fragment name
-		 */
-		renderName() {
-			this.shadowRoot.querySelector('h1').textContent = this.fragmentname;
 		}
 
 		/**
@@ -240,16 +105,6 @@
 			.then((fragment) => {
 				this.changed = '';
 			});
-		}
-
-		/**
-		 * Send the updated title to the server
-		 */
-		uploadName() {
-			const update = {
-				name: this.shadowRoot.querySelector('h1').textContent,
-			};
-			document.enchiridion.libs.fragment.update(this.fragmentid, update);
 		}
 	}
 

@@ -4,6 +4,7 @@ import fragmentPlaceholder from './coreCustomElements/fragmentPlaceholder';
 import referenceElement from './coreCustomElements/referenceElement';
 import creatorElement from './coreCustomElements/creatorElement';
 import fragmentGenerator from './coreCustomElements/fragmentGenerator';
+import pluginCommon from './coreCustomElements/pluginCommon';
 import fragment from './db/fragment.js';
 import creator from './db/creator.js';
 import pluginLoader from './pluginLoader';
@@ -80,6 +81,7 @@ export default {
 			uiUtils,
 			pluginLoader,
 			dominatrix,
+			pluginCommon,
 		};
 	},
 };
